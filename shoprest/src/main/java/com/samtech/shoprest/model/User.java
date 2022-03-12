@@ -42,7 +42,6 @@ public class User {
 		this.email = email;
 	}
 
-    
-    
+    //TODO - This is a test comment. To be deleted.    
     // standard constructors / setters / getters / toString
 }
