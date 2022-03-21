@@ -1,9 +1,13 @@
 package com.samtech.shoprest.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,23 +18,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.samtech.shoprest.model.User;
 import com.samtech.shoprest.repository.UserRepository;
+import com.samtech.shoprest.service.UserMgmtService;
 
 @Controller
 public class UserController {
 	
-	//TODO excellenet example of final
-	private final UserRepository userRepository;
+	//TODO excellent example of final
+	private final UserMgmtService userMgmtService;
 	
 	//TODO - Through Autowire we are creating objects
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserMgmtService userMgmtService) {
+        this.userMgmtService = userMgmtService;
     }
     
     
     @GetMapping("/index")
     public String showUserList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+    	
+    	 	
+    	//get the list of users from DB
+    	Iterable<User> users = userMgmtService.retrieveUserList();
+    	
+    	//set the list of users in Model
+        model.addAttribute("users", users);
+        
+        //redirect to the intended page 
         return "index";
     }
     
@@ -41,17 +54,30 @@ public class UserController {
     
     @PostMapping("/adduser")
     public String addUser(@Validated User user, BindingResult result, Model model) {
+    	
         if (result.hasErrors()) {
             return "add-user";
         }
         
-        userRepository.save(user);
+        User savedUser = userMgmtService.addUser(user);
+        
+        //userRepository.save(user);
         return "redirect:/index";
     }
     
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    	
+        //User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+    	//retrieve the user from DB if it exists
+        Optional<User> user = userMgmtService.findUserByID(id);          
+        if(user.isEmpty()) {
+        	throw new IllegalArgumentException("Invalid user Id:" + id);
+        }
+        
+        
+        //set the user in the model
         model.addAttribute("user", user);
         
         return "update-user";
@@ -59,50 +85,34 @@ public class UserController {
     
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") long id, @Validated User user, BindingResult result, Model model) {
+    	
         if (result.hasErrors()) {
             user.setId(id);
             return "update-user";
         }
         
-        userRepository.save(user);
+        userMgmtService.addUser(user);
 
         return "redirect:/index";
     }
     
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        userRepository.delete(user);
+        //User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    	//retrieve the user from DB if it exists
+        
+    	
+    	Optional<User> user = userMgmtService.findUserByID(id);          
+        if(user.isEmpty()) {
+        	throw new IllegalArgumentException("Invalid user Id:" + id);
+        } else {
+
+            //userRepository.delete(user);
+            userMgmtService.deleteUser(user.get());
+        }
+        
         
         return "redirect:/index";
     }
-    // additional CRUD methods
     
-    
-    //TODO - Good example of annotation
-    @SuppressWarnings("unused")
-	private List<User> getDummyUsers () {
-    	
-    	User user1 = new User();
-    	user1.setEmail("email1@dummyemail.com");
-    	user1.setId(1);
-    	user1.setName("User1 Name");
-    	
-    	User user2 = new User();
-    	user2.setEmail("email2@gmail.com");
-    	user2.setId(2);
-    	user2.setName("User2");
-    	
-    	User user3 = new User();
-    	user3.setEmail("email3@gmail.com");
-    	user3.setId(3);
-    	user3.setName("User3");
-    	
-    	List<User> users = new ArrayList<User>();
-    	users.add(user1);
-    	users.add(user2);
-    	users.add(user3);
-    	
-    	return users;
-    }
 }
