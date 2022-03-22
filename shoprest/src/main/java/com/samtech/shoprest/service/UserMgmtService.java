@@ -32,10 +32,13 @@ public class UserMgmtService {
 
  public Iterable<User> retrieveUserList () {
 	 
- 	//get the list of users from DB
- 	Iterable<User> users =userRepository.findAll();
- 	
- 	return users;
+		
+		  //get the list of users from DB 
+	 Iterable<User> users =userRepository.findAll();
+	 
+		  
+		  return users;
+		 
  
  }
  

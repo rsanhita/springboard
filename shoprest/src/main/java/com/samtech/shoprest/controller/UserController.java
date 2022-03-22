@@ -26,10 +26,15 @@ public class UserController {
 	//TODO excellent example of final
 	private final UserMgmtService userMgmtService;
 	
+	//TODO excellent example of final
+	private final UserRepository userRepository;
+	
 	//TODO - Through Autowire we are creating objects
     @Autowired
-    public UserController(UserMgmtService userMgmtService) {
+    public UserController(UserMgmtService userMgmtService,
+    		UserRepository userRepository) {
         this.userMgmtService = userMgmtService;
+        this.userRepository = userRepository;
     }
     
     
@@ -59,8 +64,8 @@ public class UserController {
             return "add-user";
         }
         
-        User savedUser = userMgmtService.addUser(user);
-        
+       // User savedUser = userMgmtService.addUser(user);
+        User savedUser = userRepository.save(user);
         //userRepository.save(user);
         return "redirect:/index";
     }
