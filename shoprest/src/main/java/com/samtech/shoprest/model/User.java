@@ -1,30 +1,43 @@
 package com.samtech.shoprest.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "usr")
 public class User {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
     //@NotBlank(message = "Name is mandatory")
+    @Column(name = "uname")
     private String name;
     
-    //@NotBlank(message = "Email is mandatory")
-    private String email;
-
-	public long getId() {
+    public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
 	}
+
+
+	//@NotBlank(message = "Email is mandatory")
+    @Column(name = "uemail")
+    private String email;
+
+	/*
+	 * public long getId() { return id; }
+	 * 
+	 * public void setId(long id) { this.id = id; }
+	 */
 
 	public String getName() {
 		return name;
@@ -38,6 +51,7 @@ public class User {
 		return email;
 	}
 
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Add Account</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/shards.min.css">
+    </head>
+    <body>
+        <div class="container my-5">
+            <h2 class="mb-5">Add New Account</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="#" th:action="@{/addacct}" th:object="${account}" method="post">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="Id" class="col-form-label">Id</label>
+                                <input type="text" th:field="*{id}" class="form-control" id="id" placeholder="Id">
+                                <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">Acct Name</label>
+                                <input type="text" th:field="*{acctName}" class="form-control" id="acctName" placeholder="Name">
+                                <span th:if="${#fields.hasErrors('acctName')}" th:errors="*{acctName}" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">Acct Number</label>
+                                <input type="text" th:field="*{acctNumber}" class="form-control" id="acctNumber" placeholder="Acct Number">
+                                <span th:if="${#fields.hasErrors('acctNumber')}" th:errors="*{acctNumber}" class="text-danger"></span>
+                            </div>
+                            
+
+
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">address Line1</label>
+                                <input type="text" th:field="*{addressLine1}" class="form-control" id="addressLine1" placeholder="Addr 1">
+                                <span th:if="${#fields.hasErrors('addressLine1')}" th:errors="*{addressLine1}" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">address Line2</label>
+                                <input type="text" th:field="*{addressLine2}" class="form-control" id="addressLine2" placeholder="Addr 2">
+                                <span th:if="${#fields.hasErrors('addressLine2')}" th:errors="*{addressLine2}" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">address Line3</label>
+                                <input type="text" th:field="*{addressLine3}" class="form-control" id="addressLine3" placeholder="Addr 3">
+                                <span th:if="${#fields.hasErrors('addressLine3')}" th:errors="*{addressLine3}" class="text-danger"></span>
+                            </div>
+                            
+                            
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">city</label>
+                                <input type="text" th:field="*{city}" class="form-control" id="city" placeholder="City">
+                                <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="text-danger"></span>
+                            </div>                           
+                            
+                            <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">state</label>
+                                <input type="text" th:field="*{state}" class="form-control" id="state" placeholder="State">
+                                <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}" class="text-danger"></span>
+                            </div>  
+                            
+                             <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">zipcode</label>
+                                <input type="text" th:field="*{zipcode}" class="form-control" id="zipcode" placeholder="Zipcode">
+                                <span th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}" class="text-danger"></span>
+                            </div>              
+                            
+                            
+                           <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">mobile1</label>
+                                <input type="text" th:field="*{mobile1}" class="form-control" id="mobile1" placeholder="Mobile1">
+                                <span th:if="${#fields.hasErrors('mobile1')}" th:errors="*{mobile1}" class="text-danger"></span>
+                            </div>  
+                            
+                           <div class="form-group col-md-6">
+                                <label for="Full Name" class="col-form-label">mobile2</label>
+                                <input type="text" th:field="*{mobile2}" class="form-control" id="mobile1" placeholder="Mobile2">
+                                <span th:if="${#fields.hasErrors('mobile2')}" th:errors="*{mobile2}" class="text-danger"></span>
+                            </div> 
+                            
+                            <div class="form-group col-md-6">
+                                <label for="Email Address" class="col-form-label">Email Address</label>
+                                <input type="text" th:field="*{email}" class="form-control" id="email" placeholder="Email">
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-5">
+                                <input type="submit" class="btn btn-primary" value="Add New Account">
+                            </div>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
