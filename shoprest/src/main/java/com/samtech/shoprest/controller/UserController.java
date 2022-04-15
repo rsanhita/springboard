@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -19,10 +22,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.samtech.shoprest.model.Account;
+import com.samtech.shoprest.model.Student;
 import com.samtech.shoprest.model.User;
 import com.samtech.shoprest.repository.AccountRepository;
 import com.samtech.shoprest.repository.UserRepository;
 import com.samtech.shoprest.service.AcctMgmtService;
+import com.samtech.shoprest.service.StudentService;
 import com.samtech.shoprest.service.UserMngtService;
 
 @Controller
@@ -33,12 +38,15 @@ public class UserController {
 
 	private final AcctMgmtService acctMgmtService;
 
-	private final AccountRepository accountRepository;
+	private final StudentService studentService;
+
+	// private final AccountRepository accountRepository;
 
 	// TODO - Through Autowire we are creating objects
 	@Autowired
-	public UserController(UserMngtService userMgmtService, AccountRepository accountRepository,
-			AcctMgmtService acctMgmtService) {
+	public UserController(UserMngtService userMgmtService,
+			// AccountRepository accountRepository,
+			AcctMgmtService acctMgmtService, StudentService studentService) {
 
 		System.out.println("****************************");
 		System.out.println("INSIDE CONSTRUCTOR FOR User Controller.");
@@ -46,7 +54,7 @@ public class UserController {
 
 		this.userMgmtService = userMgmtService;
 		this.acctMgmtService = acctMgmtService;
-		this.accountRepository = accountRepository;
+		this.studentService = studentService;
 
 	}
 
@@ -60,7 +68,6 @@ public class UserController {
 
 		// set the list of users in Model
 		model.addAttribute("users", users);
-		
 
 		// redirect to the intended page
 		return "index";
@@ -70,12 +77,6 @@ public class UserController {
 	public String showSignUpForm(User user) {
 		System.out.println("***  Inside showSignUpForm()....*");
 		return "add-user";
-	}
-
-	@GetMapping("/signup1")
-	public String showSignUpForm1(Account account) {
-
-		return "add-acct";
 	}
 
 	@PostMapping("/adduser")
@@ -90,22 +91,6 @@ public class UserController {
 
 		// userRepository.save(user);
 		return "redirect:/index";
-	}
-
-	@PostMapping("/addacct")
-	public String addAcct(@Validated Account account, BindingResult result, Model model) {
-
-		System.out.println("***  Inside add Acct()....*");
-
-		if (result.hasErrors()) {
-			return "add-acct";
-		}
-
-		Account savedAccount = accountRepository.save(account);
-
-		System.out.println("Redirectring..########..");
-		// userRepository.save(user);
-		return "redirect:/accts";
 	}
 
 	@GetMapping("/edit/{id}")
@@ -123,7 +108,7 @@ public class UserController {
 		// set the user in the model
 		model.addAttribute("user", user);
 
-		return "update-user";
+		return "home";
 	}
 
 	@PostMapping("/update/{id}")
@@ -136,7 +121,7 @@ public class UserController {
 
 		userMgmtService.addUser(user);
 
-		return "redirect:/index";
+		return ("redirect:/index");
 	}
 
 	@GetMapping("/delete/{id}")
@@ -152,6 +137,7 @@ public class UserController {
 
 			// userRepository.delete(user);
 			userMgmtService.deleteUser(user.get());
+
 		}
 
 		return "redirect:/index";
@@ -159,48 +145,232 @@ public class UserController {
 
 	////////////// ACCTS realted mappings /////////////////////////
 
-	@GetMapping("/accts")
-	public String showAccounts(Model model) {
+	// @GetMapping("/accts")
+	/*
+	 * public String showAccounts(Model model) {
+	 * 
+	 * 
+	 * System.out.println("***  Inside showAccount()....*");
+	 * 
+	 * String[] acctNumbers = {"80539765","98765432","34568743","987543"};
+	 * 
+	 * //this is a dummycall Iterable<Account> accountlist =
+	 * acctMgmtService.findByAcctNameandNumber("tuttu", Arrays.asList(acctNumbers));
+	 * 
+	 * //todo - change the call to repository //Iterable<Account> accounts =
+	 * accountRepository.findAll(); List<Account> accounts =
+	 * acctMgmtService.findAllNonBlankAccts();
+	 * 
+	 * // set the list of users in Model model.addAttribute("accounts", accounts);
+	 * 
+	 * // redirect to the intended page return "accts1"; }
+	 */
 
-		System.out.println("***  Inside showAccount()....*");
+	/*
+	 * @GetMapping("/acct/{id}") public String showAccountsList(@PathVariable("id")
+	 * long id, Model model) {
+	 * 
+	 * System.out.println("***  Inside showAccountsList()....id =*" +id);
+	 * 
+	 * Iterable<Account> accounts = acctMgmtService.retriveAccountById(id);
+	 * 
+	 * // set the list of users in Model // model.addAttribute("account", accounts);
+	 * model.addAttribute("accounts", accounts);
+	 * 
+	 * // redirect to the intended page return "accts1"; }
+	 * 
+	 * @GetMapping("/exp/accts") public String doExperiemnts(Model model) {
+	 * 
+	 * System.out.println("***  Inside doExperiemnts()....*");
+	 * 
+	 * //todo - change the call to repository
+	 * 
+	 * List<Account> accounts = acctMgmtService.findAllNonBlankAccts();
+	 * 
+	 * List<Account> result = StreamSupport.stream(accounts.spliterator(), false)
+	 * .collect(Collectors.toList());
+	 * 
+	 * for ( int i =0; i<result.size(); i++) {
+	 * 
+	 * System.out.println("email id :" + result.get(i).getEmail());
+	 * 
+	 * }
+	 * 
+	 * for (Account account : accounts) { System.out.println("email id :" +
+	 * account.getEmail()); }
+	 * 
+	 * 
+	 * model.addAttribute("accounts", accounts);
+	 * 
+	 * return "accts1"; }
+	 * 
+	 * //this endpoint will exclude non blank entries
+	 * 
+	 * @GetMapping("/exp/accts/nb") // Spring is using this model parameter. public
+	 * String doEshowNonBlank(Model model) {
+	 * 
+	 * System.out.println("***  Inside doEshowNonBlank()....*");
+	 * 
+	 * 
+	 * //get the list from DB Iterable<Account> accountsIterable =
+	 * accountRepository.findAll();
+	 * 
+	 * //Create a place holder for the accountlist to be created List<Account>
+	 * acctsList = new ArrayList<Account>();
+	 * 
+	 * //foreach loop for(Account account:accountsIterable) {
+	 * 
+	 * //add only the records that has valid name and number
+	 * 
+	 * if(StringUtils.isNotBlank(account.getAcctName()) &&
+	 * StringUtils.isNotBlank(account.getAcctNumber())) { //add to the arraylist to
+	 * be returned acctsList.add(account);
+	 * 
+	 * 
+	 * } }
+	 * 
+	 * 
+	 * //List<Account> acctsList = new ArrayList<Account>();
+	 * 
+	 * List<Account> acctsList = acctMgmtService.findAllNonBlankAccts(); // set the
+	 * list of users in Model model.addAttribute("accounts", acctsList);
+	 * 
+	 * // redirect to the intended page return "accts1"; }
+	 * 
+	 * 
+	 * @PostMapping("/addacct") public String addAcct(@Validated Account account,
+	 * BindingResult result, Model model) {
+	 * 
+	 * System.out.println("***  Inside add Acct()....*");
+	 * 
+	 * if (result.hasErrors()) { return "add-acct"; }
+	 * 
+	 * //Account savedAccount = accountRepository.save(account);
+	 * acctMgmtService.saveAccount(account);
+	 * 
+	 * System.out.println("Redirectring..########.."); // userRepository.save(user);
+	 * return "redirect:/accts"; //return "home"; }
+	 * 
+	 * 
+	 * @GetMapping("/acct/signup") public String showSignUpForm1(Account account) {
+	 * 
+	 * return "add-acct"; }
+	 * 
+	 * 
+	 * @GetMapping("/acct/edit/{id}") public String editAccount(@PathVariable("id")
+	 * long id, Model model) {
+	 * 
+	 * // User user = userRepository.findById(id).orElseThrow(() -> new //
+	 * IllegalArgumentException("Invalid user Id:" + id));
+	 * 
+	 * // retrieve the user from DB if it exists //Optional<User> user =
+	 * userMgmtService.findUserByID(id); Optional<Account> acct =
+	 * acctMgmtService.retriveAccounts(id);
+	 * 
+	 * if (acct.isEmpty()) { throw new IllegalArgumentException("Invalid acct Id:" +
+	 * id); }
+	 * 
+	 * // set the user in the model model.addAttribute("account", acct);
+	 * System.out.println("redirecting to ");
+	 * 
+	 * return "update-acct"; }
+	 * 
+	 * @PostMapping("/editacct") public String editAcct(@Validated Account account,
+	 * BindingResult result, Model model) {
+	 * 
+	 * System.out.println("***  Inside edit Acct()....*");
+	 * 
+	 * if (result.hasErrors()) { return "add-acct"; }
+	 * 
+	 * //Account savedAccount = accountRepository.save(account);
+	 * acctMgmtService.saveAccount(account);
+	 * 
+	 * System.out.println("Redirectring..########.."); // userRepository.save(user);
+	 * return "redirect:/accts"; //return "home"; }
+	 */
+///////	/ student related mapping/////////////////////
 
-		//todo - change the call to repository
-		Iterable<Account> accounts = accountRepository.findAll();
+	@GetMapping("/students")
+	public String showStudents(Model model) {
 
-		// set the list of users in Model
-		model.addAttribute("accounts", accounts);
+		System.out.println(" students");
 
-		// redirect to the intended page
-		return "accts";
+//studentService.findAllStudents();
+
+		Iterable<Student> studentList = studentService.findAllStudents();
+
+		model.addAttribute("students", studentList);
+
+		return "students";
 	}
 
-	@GetMapping("/acct/{id}")
-	public String showAccountsList(@PathVariable("id") long id, Model model) {
+	@GetMapping("/stud/signup")
+	public String addNewStudent(Student student) {
 
-		System.out.println("***  Inside showAccountsList()....id =*" +id);
-
-		Iterable<Account> accounts = acctMgmtService.retriveAccountById(id);
-
-		// set the list of users in Model
-		// model.addAttribute("account", accounts);
-		model.addAttribute("accounts", accounts);
-
-		// redirect to the intended page
-		return "accts";
+		return "add-stud";
 	}
-	
-	@GetMapping("/exp/accts")
-	public String doExperiemnts(Model model) {
 
-		System.out.println("***  Inside doExperiemnts()....*");
+	@GetMapping("/stud/edit/{id}")
+	public String editStudent(@PathVariable("id") long id, Model model) {
 
-		//todo - change the call to repository
-		//Iterable<Account> accounts = accountRepository.;
+		Optional<Student> student1 = studentService.findStudentById(id);
 
-		// set the list of users in Model
-		//model.addAttribute("accounts", accounts);
+		if (student1.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 
-		// redirect to the intended page
-		return "accts";
+		model.addAttribute("students", student1);
+
+		return "update-stud";
+
 	}
+
+	@PostMapping("/addstud")
+	public String addstud(@Validated Student student, BindingResult result, Model model) {
+
+		System.out.println("***  Inside add student()....*");
+
+		if (result.hasErrors()) {
+			return "add-stud";
+		}
+
+		studentService.saveStudent(student);
+
+		// Account savedAccount = accountRepository.save(account);
+
+		System.out.println("Redirectring..########..");
+		// userRepository.save(user);
+		return "redirect:/students";
+		// return "home";
+	}
+
+	@PostMapping("/editstud")
+	public String editStudent(@Validated Student student, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+
+			return "add-stud";
+
+		}
+		studentService.saveStudent(student);
+
+		return "redirect:/students";
+	}
+
+	@GetMapping("/stud/delete/{id}")
+	public String deleteStudent(@PathVariable("id") long id, Model model) {
+
+		Optional<Student> student1 = studentService.findStudentById(id);
+		if (student1.isEmpty()) {
+
+			throw new IllegalArgumentException("invaid is---" + id);
+
+		}
+
+		studentService.deleteStudent(id);
+
+		return "redirect:/students";
+
+	}
+
 }
