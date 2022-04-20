@@ -46,14 +46,11 @@ public class StudentService {
 	
 	public void deleteStudent(long id) {
 		
-		
-		
 		//Optional<Student> student1 = Optional.empty();
 		
 		studentRepository.deleteById(id);
 		
-	}
-		
+	}		
 }
 	
 

@@ -52,11 +52,28 @@ public class AccountController {
 	}
 	
 	@GetMapping("/acct/{id}")
-	public String showAccountsList(@PathVariable("id") long id, Model model) {
+	public String showAccountsList(@PathVariable("id") String id, Model model) {
 
 		System.out.println("***  Inside showAccountsList()....id =*" +id);
-
-		Iterable<Account> accounts = acctMgmtService.retriveAccountById(id);
+		
+		Long.parseLong(id);
+		
+		Long myL = Long.valueOf(5l);
+		
+		myL.doubleValue();
+		
+		myL.longValue();
+		
+		myL.intValue();
+		myL.decode("15");
+		
+		Integer a = Integer.valueOf(2);
+		a = a.intValue() * 10;
+		System.out.println(a.intValue()); // will output 20
+		
+		
+		
+		Iterable<Account> accounts = acctMgmtService.retriveAccountById(Long.parseLong(id));
 
 		// set the list of users in Model
 		// model.addAttribute("account", accounts);
@@ -196,5 +213,9 @@ public class AccountController {
 		return "redirect:/accts";
 		//return "home";
 	}
+	
+	
+		
+	}
 
-}
+

@@ -3,6 +3,7 @@ package com.samtech.shoprest.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.samtech.shoprest.comperator.FirstNameComparator;
 import com.samtech.shoprest.model.Account;
 import com.samtech.shoprest.model.Student;
 import com.samtech.shoprest.model.User;
@@ -371,6 +373,115 @@ public class UserController {
 
 		return "redirect:/students";
 
+	}
+
+	@GetMapping("/combined1")
+	public String getAccountAndStudentVer1(Model model) {
+		
+		Iterable<Student> studentList = studentService.findAllStudents();
+		
+		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
+
+		
+		
+		List<Student> studs = new ArrayList<Student>();
+		List<Account> accts = new ArrayList<Account>();
+
+
+		
+		for (Student student :studentList) {
+			
+			
+			for(Account account: accountlist) {
+				
+				System.out.println("matching " +  student.getId() +" with "+account.getId());
+				if( student.getId()== account.getId()) {
+					
+					System.out.println("******match***** " +  student.getId() );
+					
+					studs.add(student);
+					accts.add(account);
+				}
+			}
+		}
+		
+		model.addAttribute("students", studs);
+		model.addAttribute("accounts", accts);
+		return "combo";
+		
+	}		
+
+	@GetMapping("/combined")
+	public String getAccountAndStudent(Model model) {
+		
+		Iterable<Student> studentList = studentService.findAllStudents();
+		
+		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
+
+		
+			
+		model.addAttribute("students", studentList);
+		model.addAttribute("accounts", accountlist);
+		return "combo";
+		
+	}	
+	
+	
+	@GetMapping("/combined2")
+	public String getAccountAndStudent2(Model model) {
+		
+		Iterable<Student> studentList = studentService.findAllStudents();
+		
+		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
+
+		ArrayList<Student> studs = new ArrayList<Student>();
+		ArrayList<Account> accts = new ArrayList<Account>();
+		
+		for(Student student:studentList) {
+			
+			for (Account account : accountlist) {
+				
+				if(student.getEmail() .equalsIgnoreCase(account.getEmail())) {
+					
+					studs.add(student);
+					accts.add(account);
+				}
+			}
+			
+			// 
+		}
+		
+		
+		
+		model.addAttribute("students", studs);
+		model.addAttribute("accounts", accts);
+		return "combo";
+		
+	}
+	//this method will show the studentlist sorted by firstname
+	
+	@GetMapping("/students1")
+	public String showStudents1 (Model model) {
+
+		System.out.println(" students");
+
+//studentService.findAllStudents();
+
+		Iterable<Student> students = studentService.findAllStudents();
+		
+		List<Student> studentList = StreamSupport.stream(students.spliterator(), false)
+				 .collect(Collectors.toList());
+
+		
+//convert iterable to arraylist		 
+		
+		Collections.sort(studentList,new FirstNameComparator()); 
+		
+		//Collections.sort(null)
+
+		model.addAttribute("students", studentList);
+
+		return "students";
 	}
 
 }

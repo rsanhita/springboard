@@ -8,12 +8,12 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.samtech.shoprest.model.Account;
 import com.samtech.shoprest.repository.AccountRepository;
 
-@Component
-
+@Service
 public class AcctMgmtService {
 
 	private final AccountRepository accountRepository;
@@ -25,13 +25,7 @@ public class AcctMgmtService {
 
 	}
 
-	public void createAccount(Account account) {
 
-		// this method is not ready yet
-
-	}
-
-	// TODO - METHOD TO BE CORRECTED LATER
 	public Iterable<Account> retriveAccountById(Long id) {
 
 		System.out.println("Input received :" + id);
@@ -49,6 +43,8 @@ public class AcctMgmtService {
 
 		return accts;
 
+		
+		
 		// return Collections.singletonList(account1);
 
 	}
