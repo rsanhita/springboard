@@ -37,15 +37,15 @@ public class AccountController {
 
 		String[] acctNumbers = { "80539765", "98765432", "34568743", "987543" };
 
-		// this is a dummycall
-		Iterable<Account> accountlist = acctMgmtService.findByAcctNameandNumber("tuttu", Arrays.asList(acctNumbers));
+		
+		
+		//Iterable<Account> accountlist = acctMgmtService.findByAcctNameandNumber("tuttu", Arrays.asList(acctNumbers));
+		Iterable<Account> accountlist = acctMgmtService.findAllOrderByAcctNumberAndName(); 
 
-		// todo - change the call to repository
-		// Iterable<Account> accounts = accountRepository.findAll();
-		List<Account> accounts = acctMgmtService.findAllNonBlankAccts();
+		
+		//List<Account> accounts = acctMgmtService.findAllNonBlankAccts();
 
-		// set the list of users in Model
-		model.addAttribute("accounts", accounts);
+		model.addAttribute("accounts", accountlist);
 
 		// redirect to the intended page
 		return "accts1";

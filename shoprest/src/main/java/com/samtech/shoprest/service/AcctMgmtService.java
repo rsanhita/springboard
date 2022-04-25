@@ -25,7 +25,6 @@ public class AcctMgmtService {
 
 	}
 
-
 	public Iterable<Account> retriveAccountById(Long id) {
 
 		System.out.println("Input received :" + id);
@@ -43,8 +42,6 @@ public class AcctMgmtService {
 
 		return accts;
 
-		
-		
 		// return Collections.singletonList(account1);
 
 	}
@@ -59,45 +56,64 @@ public class AcctMgmtService {
 	}
 
 	public List<Account> findAllNonBlankAccts() {
-				
-		//get the list from DB
-		Iterable<Account> accountsIterable =  accountRepository.findAll();
-		
-		//Create a place holder for the accountlist to be created
-		//programming to an interface
+
+		// get the list from DB
+		Iterable<Account> accountsIterable = accountRepository.findAll();
+
+		// Create a place holder for the accountlist to be created
+		// programming to an interface
 		// we can write this way too Line 73 but Line 75 is better
-		//ArrayList<Account> acctsList = new ArrayList<Account>();
+		// ArrayList<Account> acctsList = new ArrayList<Account>();
 
 		List<Account> acctsList = new ArrayList<Account>();
-		
 
-		//foreach loop	
-		for(Account account:accountsIterable) {
-			
-			//add only the records that has valid name and number
-			
-			if(StringUtils.isNotBlank(account.getAcctName()) && StringUtils.isNotBlank(account.getAcctNumber())) {
-				//add to the arraylist to be returned
+		for (Account account : accountsIterable) {
+
+			// add only the records that has valid name and number
+
+			if (StringUtils.isNotBlank(account.getAcctName()) && StringUtils.isNotBlank(account.getAcctNumber())) {
+				// add to the arraylist to be returned
 				acctsList.add(account);
-				
-				
-			}				
-		} 
+
+			}
+		}
 		return acctsList;
 	}
-	public Account saveAccount( Account account ) {
-		
-		Account savedAccount = accountRepository.save(account);	
-		
+
+	public Account saveAccount(Account account) {
+
+		Account savedAccount = accountRepository.save(account);
+
 		return savedAccount;
-		
+
 	}
-	
-	public Iterable<Account> findByAcctNameandNumber (String acctName,List<String> acctNumbers) {
-	
-		
-		Iterable<Account> acctlist = accountRepository. findByAcctNameAndAcctNumberIn(acctName, acctNumbers);
-		
+
+	public Iterable<Account> findByAcctNameandNumber(String acctName, List<String> acctNumbers) {
+
+		Iterable<Account> acctlist = accountRepository.findByAcctNameAndAcctNumberIn(acctName, acctNumbers);
+
 		return acctlist;
 	}
+
+	public Iterable<Account> findAllOrderByAcctNumberAndName() {
+
+		Iterable<Account> acctlist = accountRepository.findByOrderByAcctNumberAsc();
+
+		List<Account> accounts = new ArrayList<Account>();
+
+		for (Account account : acctlist) {
+
+			if (account.getAcctName() != null && !account.getAcctName().isBlank() && account.getAcctNumber() != null
+					&& !account.getAcctNumber().isBlank()) {
+				
+				accounts.add(account);
+
+			}
+			
+
+		}
+
+		return accounts;
+	}
+
 }
