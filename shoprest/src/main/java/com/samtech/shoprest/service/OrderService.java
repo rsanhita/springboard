@@ -40,9 +40,10 @@ public class OrderService {
 
 		for (Order order : orders) {
 			
-			//if(StringUtils.isNotBlank(order.getRequired_date()) && StringUtils.isNotEmpty(order.getShipped_date()))  {
+			boolean result = order.getShipped_date() != null;
+				
 
-			if (betweenDates( order.getRequired_date() , order.getShipped_date()) > 15) {
+			if (result && betweenDates( order.getRequired_date() , order.getShipped_date()) > 15) {
 
 				filteredList.add(order);
 
