@@ -7,17 +7,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table ( name = "customers")
-public class Customers {
+public class Customer {
 	
 	
 	@Id
     @Column(name = " customer_id")
-	private long customer_id;
+	private String customer_id;
 	
 	@Column(name = "company_name")
 	private String company_name;
 	
-	@Column(name = "required_date")
+	@Column(name = "contact_name")
 	private String contact_name;
 	
 	@Column(name = "contact_title")
@@ -33,19 +33,19 @@ public class Customers {
 	private String region;
 	
 	@Column(name = "postal_code")
-	private long postal_code;
+	private String postal_code;
 	
 	@Column(name = "country")
 	private String country;
 	
 	@Column(name = "phone")
-	private long phone;
+	private String phone;
 	
 	@Column(name = "fax")
-	private long fax;
+	private String fax;
 	
 	
-	public long getCustomer_id() {
+	public String getCustomer_id() {
 		return customer_id;
 	}
 	public String getCompany_name() {
@@ -66,19 +66,19 @@ public class Customers {
 	public String getRegion() {
 		return region;
 	}
-	public long getPostal_code() {
+	public String getPostal_code() {
 		return postal_code;
 	}
 	public String getCountry() {
 		return country;
 	}
-	public long getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public long getFax() {
+	public String getFax() {
 		return fax;
 	}
-	public void setCustomer_id(long customer_id) {
+	public void setCustomer_id(String customer_id) {
 		this.customer_id = customer_id;
 	}
 	public void setCompany_name(String company_name) {
@@ -99,16 +99,16 @@ public class Customers {
 	public void setRegion(String region) {
 		this.region = region;
 	}
-	public void setPostal_code(long postal_code) {
+	public void setPostal_code(String postal_code) {
 		this.postal_code = postal_code;
 	}
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public void setPhone(long phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public void setFax(long fax) {
+	public void setFax(String fax) {
 		this.fax = fax;
 	}
 	

@@ -1,6 +1,7 @@
 package com.samtech.shoprest.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +84,19 @@ private final OrderService orderService;
 		
 		
 				return "orders"; 
+	}
+	
+	@GetMapping("/orders3")
+	public String showJulyOrder(Model model) throws ParseException {
+
+		System.out.println("***  Inside showorders()....***");
+		
+		Iterable<Order> orders = orderService.findAllOrdersOfJuly();
+		
+		model.addAttribute("orders", orders);
+		// redirect to the intended page
+		return "orders";
+				
 	}
 	
 	
