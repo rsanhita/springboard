@@ -112,5 +112,32 @@ public class Customer {
 		this.fax = fax;
 	}
 	
-	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(" Customer [country= ");
+		builder.append(country);
+		builder.append(", customer_id=");
+		builder.append(customer_id);
+		builder.append(", company_name=");
+		builder.append(company_name);
+		builder.append(", contact_name=");
+		builder.append(contact_name);
+		builder.append(", contact_title=");
+		builder.append(contact_title);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append(", city=");
+		builder.append(city);
+		builder.append(", region=");
+		builder.append(region);
+		builder.append(", postal_code=");
+		builder.append(postal_code);
+		builder.append(", phone=");
+		builder.append(phone);
+		builder.append(", fax=");
+		builder.append(fax);
+		builder.append("]");
+		return builder.toString();
+	}	
 }

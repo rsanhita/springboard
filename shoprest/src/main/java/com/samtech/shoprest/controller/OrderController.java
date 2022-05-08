@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.samtech.shoprest.model.Account;
 import com.samtech.shoprest.model.Order;
@@ -38,6 +39,31 @@ private final OrderService orderService;
 		return "orders";
 				
 	}
+	
+	
+	@GetMapping("/api/orders/{id}")
+	
+	public String getEmployeesById(@PathVariable String id,Model model) {
+	
+	    
+	    System.out.println( "ID: " + id );
+	    
+	    return "home" ;
+	}
+	
+	@GetMapping("/api/employees/{id}/{name}")
+
+	public String getEmployeesByIdAndName(@PathVariable String id, @PathVariable String name) {
+		
+		
+		System.out.println( "ID: " + id + ", name: " + name );
+		
+	    return "home";
+	    
+	    
+	    
+	}
+	
 	
 	@GetMapping("/orders1")
 	public String showoShipViaList(Model model) throws IOException {

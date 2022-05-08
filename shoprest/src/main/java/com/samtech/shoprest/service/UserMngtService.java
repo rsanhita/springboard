@@ -12,42 +12,43 @@ import com.samtech.shoprest.repository.UserRepository;
 
 public class UserMngtService {
 
-	private final UserRepository userRepository;
-
-	@Autowired
-	public UserMngtService(UserRepository userRepository) {
-
-		this.userRepository = userRepository;
-
-	}
+	/*
+	 * private final UserRepository userRepository;
+	 * 
+	 * @Autowired public UserMngtService(UserRepository userRepository) {
+	 * 
+	 * this.userRepository = userRepository;
+	 * 
+	 * }
+	 */
 
 	public User addUser(User user) {
 
-		User saveduser = userRepository.save(user);
+		//User saveduser = userRepository.save(user);
 
-		return saveduser;
+		return null;
 	}
 
-	public Iterable<User> retrieveUserList() {
-
-		// get the list of users from DB
-		Iterable<User> users = userRepository.findAll();
-
-		// users.forEach(t -> System.out.println()) {};
-
-				return users;
-
-	}
-
-	public Optional<User> findUserByID(long id) {
-
-		Optional<User> user = userRepository.findById(id);
-
-		return user;
-	}
-
-	public void deleteUser(User user) {
-
-		userRepository.delete(user);
-	}
+	/*
+	 * public Iterable<User> retrieveUserList() {
+	 * 
+	 * // get the list of users from DB //Iterable<User> users =
+	 * userRepository.findAll();
+	 * 
+	 * // users.forEach(t -> System.out.println()) {};
+	 * 
+	 * return users;
+	 * 
+	 * }
+	 * 
+	 * public Optional<User> findUserByID(long id) {
+	 * 
+	 * Optional<User> user = userRepository.findById(id);
+	 * 
+	 * return user; }
+	 * 
+	 * public void deleteUser(User user) {
+	 * 
+	 * userRepository.delete(user); }
+	 */
 }
