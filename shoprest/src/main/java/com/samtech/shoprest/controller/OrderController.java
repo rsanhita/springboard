@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.samtech.shoprest.model.Account;
 import com.samtech.shoprest.model.Order;
@@ -43,7 +44,17 @@ private final OrderService orderService;
 	
 	@GetMapping("/api/orders/{id}")
 	
-	public String getEmployeesById(@PathVariable String id,Model model) {
+	public String getEmployeesById(@PathVariable String  id,Model model) {
+	
+	    
+	    System.out.println( "P ID: " + id );
+	    
+	    return "home" ;
+	}
+	
+@GetMapping("/api/orders")
+	
+	public String getEmployeesById1(@RequestParam  String  id,Model model) {
 	
 	    
 	    System.out.println( "ID: " + id );
@@ -53,7 +64,10 @@ private final OrderService orderService;
 	
 	@GetMapping("/api/employees/{id}/{name}")
 
-	public String getEmployeesByIdAndName(@PathVariable String id, @PathVariable String name) {
+	public String getEmployeesByIdAndName(@PathVariable String id, @PathVariable String name)
+	
+	
+	{
 		
 		
 		System.out.println( "ID: " + id + ", name: " + name );

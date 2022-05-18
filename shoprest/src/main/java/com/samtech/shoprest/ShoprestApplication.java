@@ -1,4 +1,4 @@
-package com.samtech.shoprest;
+ package com.samtech.shoprest;
 
 //for thymeleaf - https://github.com/eugenp/tutorials/tree/master/spring-boot-modules/spring-boot-crud
 

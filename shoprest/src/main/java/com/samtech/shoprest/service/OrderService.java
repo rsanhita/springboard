@@ -1,6 +1,7 @@
 package com.samtech.shoprest.service;
 
 import java.io.IOException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -85,9 +86,19 @@ public class OrderService {
 			if (order.getOrder_date().toString().contains("-07-")) {
 
 				filteredList.add(order);
+
 			}
 
 		}
+
+		// start
+		while (filteredList.iterator().hasNext()) {
+
+			Order order = filteredList.iterator().next();
+
+		}
+
+		// end
 
 		return filteredList;
 

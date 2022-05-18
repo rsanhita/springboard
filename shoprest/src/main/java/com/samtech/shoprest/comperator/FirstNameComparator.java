@@ -15,9 +15,7 @@ public class FirstNameComparator  implements Comparator<Student> {
 		//String str1 = s1.getFirstName();
 	
 		//return s1.getFirstName().StringUtils.toRootUpperCase(null).compareTo(s2.getFirstName()StringUtils.toRootUpperCase(null));
-		
-		
-		
+			
 		//return xxxxx.compareTo(yyyyyyy);
 	
 	return StringUtils.toRootUpperCase(s1.getFirstName()).compareTo(StringUtils.toRootUpperCase(s2.getFirstName()));
