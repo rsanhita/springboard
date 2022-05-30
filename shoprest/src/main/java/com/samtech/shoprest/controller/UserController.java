@@ -1,3 +1,4 @@
+
 package com.samtech.shoprest.controller;
 
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.samtech.shoprest.comperator.DobComparator;
 import com.samtech.shoprest.comperator.FirstNameComparator;
+
 import com.samtech.shoprest.model.Account;
 import com.samtech.shoprest.model.Student;
 import com.samtech.shoprest.model.User;
@@ -60,90 +63,68 @@ public class UserController {
 
 	}
 
-	@GetMapping("/index")
-	public String showUserList(Model model) {
-
-		System.out.println("***  Inside showUserList()....*");
-
-		// get the list of users from DB
-		Iterable<User> users = userMgmtService.retrieveUserList();
-
-		// set the list of users in Model
-		model.addAttribute("users", users);
-
-		// redirect to the intended page
-		return "index";
-	}
-
-	@GetMapping("/signup")
-	public String showSignUpForm(User user) {
-		System.out.println("***  Inside showSignUpForm()....*");
-		return "add-user";
-	}
-
-	@PostMapping("/adduser")
-	public String addUser(@Validated User user, BindingResult result, Model model) {
-
-		System.out.println("***  Inside addUser()....*");
-		if (result.hasErrors()) {
-			return "add-user";
-		}
-
-		User savedUser = userMgmtService.addUser(user);
-
-		// userRepository.save(user);
-		return "redirect:/index";
-	}
-
-	@GetMapping("/edit/{id}")
-	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-
-		// User user = userRepository.findById(id).orElseThrow(() -> new
-		// IllegalArgumentException("Invalid user Id:" + id));
-
-		// retrieve the user from DB if it exists
-		Optional<User> user = userMgmtService.findUserByID(id);
-		if (user.isEmpty()) {
-			throw new IllegalArgumentException("Invalid user Id:" + id);
-		}
-
-		// set the user in the model
-		model.addAttribute("user", user);
-
-		return "home";
-	}
-
-	@PostMapping("/update/{id}")
-	public String updateUser(@PathVariable("id") long id, @Validated User user, BindingResult result, Model model) {
-
-		if (result.hasErrors()) {
-			// user.setId(id);
-			return "update-user";
-		}
-
-		userMgmtService.addUser(user);
-
-		return ("redirect:/index");
-	}
-
-	@GetMapping("/delete/{id}")
-	public String deleteUser(@PathVariable("id") long id, Model model) {
-		// User user = userRepository.findById(id).orElseThrow(() -> new
-		// IllegalArgumentException("Invalid user Id:" + id));
-		// retrieve the user from DB if it exists
-
-		Optional<User> user = userMgmtService.findUserByID(id);
-		if (user.isEmpty()) {
-			throw new IllegalArgumentException("Invalid user Id:" + id);
-		} else {
-
-			// userRepository.delete(user);
-			userMgmtService.deleteUser(user.get());
-
-		}
-
-		return "redirect:/index";
-	}
+	/*
+	 * @GetMapping("/index") public String showUserList(Model model) {
+	 * 
+	 * System.out.println("***  Inside showUserList()....*");
+	 * 
+	 * // get the list of users from DB Iterable<User> users =
+	 * userMgmtService.retrieveUserList();
+	 * 
+	 * // set the list of users in Model model.addAttribute("users", users);
+	 * 
+	 * // redirect to the intended page return "index"; }
+	 * 
+	 * @GetMapping("/signup") public String showSignUpForm(User user) {
+	 * System.out.println("***  Inside showSignUpForm()....*"); return "add-user"; }
+	 * 
+	 * @PostMapping("/adduser") public String addUser(@Validated User user,
+	 * BindingResult result, Model model) {
+	 * 
+	 * System.out.println("***  Inside addUser()....*"); if (result.hasErrors()) {
+	 * return "add-user"; }
+	 * 
+	 * User savedUser = userMgmtService.addUser(user);
+	 * 
+	 * // userRepository.save(user); return "redirect:/index"; }
+	 * 
+	 * @GetMapping("/edit/{id}") public String showUpdateForm(@PathVariable("id")
+	 * long id, Model model) {
+	 * 
+	 * // User user = userRepository.findById(id).orElseThrow(() -> new //
+	 * IllegalArgumentException("Invalid user Id:" + id));
+	 * 
+	 * // retrieve the user from DB if it exists Optional<User> user =
+	 * userMgmtService.findUserByID(id); if (user.isEmpty()) { throw new
+	 * IllegalArgumentException("Invalid user Id:" + id); }
+	 * 
+	 * // set the user in the model model.addAttribute("user", user);
+	 * 
+	 * return "home"; }
+	 * 
+	 * @PostMapping("/update/{id}") public String updateUser(@PathVariable("id")
+	 * long id, @Validated User user, BindingResult result, Model model) {
+	 * 
+	 * if (result.hasErrors()) { // user.setId(id); return "update-user"; }
+	 * 
+	 * userMgmtService.addUser(user);
+	 * 
+	 * return ("redirect:/index"); }
+	 * 
+	 * @GetMapping("/delete/{id}") public String deleteUser(@PathVariable("id") long
+	 * id, Model model) { // User user = userRepository.findById(id).orElseThrow(()
+	 * -> new // IllegalArgumentException("Invalid user Id:" + id)); // retrieve the
+	 * user from DB if it exists
+	 * 
+	 * Optional<User> user = userMgmtService.findUserByID(id); if (user.isEmpty()) {
+	 * throw new IllegalArgumentException("Invalid user Id:" + id); } else {
+	 * 
+	 * // userRepository.delete(user); userMgmtService.deleteUser(user.get());
+	 * 
+	 * }
+	 * 
+	 * return "redirect:/index"; }
+	 */
 
 	////////////// ACCTS realted mappings /////////////////////////
 
@@ -375,109 +356,94 @@ public class UserController {
 
 	}
 
-	@GetMapping("/combined1")
-	public String getAccountAndStudentVer1(Model model) {
-		
-		Iterable<Student> studentList = studentService.findAllStudents();
-		
-		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
-
-		
-		
-		List<Student> studs = new ArrayList<Student>();
-		List<Account> accts = new ArrayList<Account>();
-
-
-		
-		for (Student student :studentList) {
-			
-			
-			for(Account account: accountlist) {
-				
-				System.out.println("matching " +  student.getId() +" with "+account.getId());
-				if( student.getId()== account.getId()) {
-					
-					System.out.println("******match***** " +  student.getId() );
-					
-					studs.add(student);
-					accts.add(account);
-				}
+	
+	  @GetMapping("/combined1") public String getAccountAndStudentVer1(Model model)
+	  {
+	  
+	  Iterable<Student> studentList = studentService.findAllStudents();
+	  
+	  List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
+	  
+	  List<Student> studs = new ArrayList<Student>(); List<Account> accts = new
+	  ArrayList<Account>();
+	  
+	  for (Student student : studentList) {
+	  
+	  for (Account account : accountlist) {
+	  
+	  System.out.println("matching " + student.getId() + " with " +
+	  account.getId()); if (student.getId() == account.getId()) {
+	  
+	  System.out.println("******match***** " + student.getId());
+	  
+	  studs.add(student); accts.add(account); }
+	 
 			}
 		}
-		
+
 		model.addAttribute("students", studs);
 		model.addAttribute("accounts", accts);
 		return "combo";
-		
-	}		
+
+	}
 
 	@GetMapping("/combined")
 	public String getAccountAndStudent(Model model) {
-		
+
 		Iterable<Student> studentList = studentService.findAllStudents();
-		
+
 		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
 
-		
-			
 		model.addAttribute("students", studentList);
 		model.addAttribute("accounts", accountlist);
 		return "combo";
-		
-	}	
-	
-	
+
+	}
+
 	@GetMapping("/combined2")
 	public String getAccountAndStudent2(Model model) {
-		
+
 		Iterable<Student> studentList = studentService.findAllStudents();
-		
+
 		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
 
 		ArrayList<Student> studs = new ArrayList<Student>();
 		ArrayList<Account> accts = new ArrayList<Account>();
-		
-		for(Student student:studentList) {
-			
+
+		for (Student student : studentList) {
+
 			for (Account account : accountlist) {
-				
-				if(student.getEmail() .equalsIgnoreCase(account.getEmail())) {
-					
+
+				if (student.getEmail().equalsIgnoreCase(account.getEmail())) {
+
 					studs.add(student);
 					accts.add(account);
 				}
 			}
-			
-			// 
+
 		}
-		
-		
-		
+
 		model.addAttribute("students", studs);
 		model.addAttribute("accounts", accts);
 		return "combo";
-		
+
 	}
-	//this method will show the studentlist sorted by firstname
-	
+	// this method will show the studentlist sorted by firstname
+
 	@GetMapping("/students1")
-	public String showStudents1 (Model model) {
+	public String showStudents1(Model model) {
 
 		System.out.println(" students");
-
-//studentService.findAllStudents();
+		
 
 		Iterable<Student> students = studentService.findAllStudents();
-		
-		List<Student> studentList = StreamSupport.stream(students.spliterator(), false)
-				 .collect(Collectors.toList());
 
+		// convert iterable to arraylist
+		List<Student> studentList = StreamSupport.stream(students.spliterator(), false).collect(Collectors.toList());
+
+		//Collections.sort(studentList, new FirstNameComparator());
 		
-//convert iterable to arraylist		 
-		
-		Collections.sort(studentList,new FirstNameComparator()); 
-		
-		//Collections.sort(null)
+		Collections.sort(studentList, new  DobComparator());
 
 		model.addAttribute("students", studentList);
 
