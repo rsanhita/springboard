@@ -356,28 +356,28 @@ public class UserController {
 
 	}
 
-	@GetMapping("/combined1")
-	public String getAccountAndStudentVer1(Model model) {
-
-		Iterable<Student> studentList = studentService.findAllStudents();
-
-		List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
-
-		List<Student> studs = new ArrayList<Student>();
-		List<Account> accts = new ArrayList<Account>();
-
-		for (Student student : studentList) {
-
-			for (Account account : accountlist) {
-
-				System.out.println("matching " + student.getId() + " with " + account.getId());
-				if (student.getId() == account.getId()) {
-
-					System.out.println("******match***** " + student.getId());
-
-					studs.add(student);
-					accts.add(account);
-				}
+	
+	  @GetMapping("/combined1") public String getAccountAndStudentVer1(Model model)
+	  {
+	  
+	  Iterable<Student> studentList = studentService.findAllStudents();
+	  
+	  List<Account> accountlist = acctMgmtService.findAllNonBlankAccts();
+	  
+	  List<Student> studs = new ArrayList<Student>(); List<Account> accts = new
+	  ArrayList<Account>();
+	  
+	  for (Student student : studentList) {
+	  
+	  for (Account account : accountlist) {
+	  
+	  System.out.println("matching " + student.getId() + " with " +
+	  account.getId()); if (student.getId() == account.getId()) {
+	  
+	  System.out.println("******match***** " + student.getId());
+	  
+	  studs.add(student); accts.add(account); }
+	 
 			}
 		}
 

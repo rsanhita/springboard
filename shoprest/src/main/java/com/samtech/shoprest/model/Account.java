@@ -1,3 +1,4 @@
+
 package com.samtech.shoprest.model;
 
 import javax.persistence.Column;
