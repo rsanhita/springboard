@@ -1,10 +1,15 @@
 package com.samtech.shoprest.controller;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,21 +67,49 @@ public class OrderController {
 
 	public String getEmployeesById1(@RequestParam String id, Model model) throws JsonProcessingException {
 
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		
 		Long idL = Long.valueOf(id);
 
 		Iterable<Order> orders = orderRepository.findAll();
 
-		
-		//Optional<Order> order = orderRepository.findById(idL);
-		
-		//Order order1 = orders.get();
-		
+		// Optional<Order> order = orderRepository.findById(idL);
+
+		// Order order1 = orders.get();
+
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String json = ow.writeValueAsString(orders);
-		
-	
+
 		System.out.println("json: " + json);
+
+		
+		//Java object. We will convert it to XML.
+		Order order = orders.iterator().next();
+	    
+		//Method which uses JAXB to convert object to XML
+		 try
+	      {
+	        //Create JAXB Context
+	          JAXBContext jaxbContext = JAXBContext.newInstance(Order.class);
+	           
+	          //Create Marshaller
+	          Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+	 
+	          //Required formatting??
+	          jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+	 
+	          //Print XML String to Console
+	          StringWriter sw = new StringWriter();
+	           
+	          //Write XML to StringWriter
+	          jaxbMarshaller.marshal(order, sw);
+	           
+	          //Verify XML Content
+	          String xmlContent = sw.toString();
+	          System.out.println(" xml ::"+ xmlContent );
+	 
+	      } catch (JAXBException e) {
+	          e.printStackTrace();
+	      }
+		
 		
 		return "home";
 
@@ -147,5 +180,34 @@ public class OrderController {
 		return "orders";
 
 	}
+	
+	private static void jaxbObjectToXML(Order order) 
+	  {
+	      try
+	      {
+	        //Create JAXB Context
+	          JAXBContext jaxbContext = JAXBContext.newInstance(Order.class);
+	           
+	          //Create Marshaller
+	          Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+	 
+	          //Required formatting??
+	          jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+	 
+	          //Print XML String to Console
+	          StringWriter sw = new StringWriter();
+	           
+	          //Write XML to StringWriter
+	          jaxbMarshaller.marshal(order, sw);
+	           
+	          //Verify XML Content
+	          String xmlContent = sw.toString();
+	          System.out.println(" xml ::"+ xmlContent );
+	 
+	      } catch (JAXBException e) {
+	          e.printStackTrace();
+	      }
+	  }
+	
 
 }

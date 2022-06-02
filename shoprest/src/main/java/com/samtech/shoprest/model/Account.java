@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "account_data")
+
 public class Account {
 	
     @Id
